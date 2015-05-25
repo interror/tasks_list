@@ -1,0 +1,17 @@
+<tr style="border: 2px solid #000">
+  <td>
+    <%= task.owner %>
+  </td>
+  <td class="desc">
+    <%= task.description %>
+  </td>
+  <td>
+    <%= task.state %>
+  </td>
+  <td>
+    <%= task.created_at.strftime("%d %b. '%H:%M'") %>
+  </td>
+  <!-- <td>
+    <%= task.find_performer %>
+  </td> -->
+</tr>

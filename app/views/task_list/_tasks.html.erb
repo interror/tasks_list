@@ -1,0 +1,10 @@
+
+<tr>
+  <th class="order owner" >Owner</th>
+  <th class="order description" >Task Description</th>
+  <th class="order state" >State</th>
+  <th class="order created_at" >Create at</th>
+</tr>
+  <% tasks.each do |task| %>
+    <%= render 'task', task: task %>
+  <% end %>
