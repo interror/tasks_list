@@ -1,4 +1,4 @@
-<tr style="border: 2px solid #000" class="task">
+<tr class="task">
   <td>
     <%= task.owner %>
   </td>
@@ -12,9 +12,13 @@
     <%= task.created_at.strftime("%d %b. '%H:%M'") %>
   </td>
   <td>
-    <%= link_to "X", destroy_task_list_path(task),remote: true, method: 'delete',class: "delete_task", data: {confirm: 'Are you sure?'} %>
+    <%= link_to edit_task_list_path(task), remote: true, class: 'editBtn' do %>
+      <span class="glyphicon glyphicon-pencil"></span>
+    <% end %>
   </td>
   <td>
-    <%= link_to "Edit", edit_task_list_path(task), remote: true, class: 'editBtn' %>
+    <%= link_to destroy_task_list_path(task),remote: true, method: 'delete',class: "delete_task", data: {confirm: 'Are you sure?'} do%>
+      <span class="glyphicon glyphicon-remove"></span>
+    <% end %>
   </td>
 </tr>

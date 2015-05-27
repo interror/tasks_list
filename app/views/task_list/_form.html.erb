@@ -1,21 +1,18 @@
 <div id="taskShowContainer">
-  <h1>Edit Task</h1>
+  <h3>Edit Task</h3>
   <div class="closeTaskShow">x</div>
   <%= form_for @task, :html => {:class => 'edit_task'}, remote: true  do |f| %>
   <p>Description</p>
-  <%= f.text_area :description %>
-  <p>Performer</p>
-  <%= f.select(:performer) do %>
-    <% @select_users.each do |c| -%>
-    <%= content_tag(:option, c.first, value: c.last) %>
-  <% end %>
-  <% end %>
-  <p>State</p>
-  <%= f.select(:state) do %>
-    <% [["Done","done"],["Open","open"]].each do |c| -%>
-    <%= content_tag(:option, c.first, value: c.last) %>
-  <% end %>
-  <% end %>
-  <%= f.submit "Submit" %>
+  <%= f.text_area :description, class: 'form-control' %>
+  <p style="margin:5px auto;">Performer
+  <%= f.select "performer",
+      options_from_collection_for_select(@users, "id","name"),
+      { :include_blank => true },
+      { :class => 'selectpicker' } %>
+      State
+  <%= f.select "state",
+      [["Open","open"],["Done","done"]],{},
+      { :class => 'selectpicker' } %></p>
+  <%= f.submit "Submit", class: 'btn btn-default' %>
   <% end %>
 </div>

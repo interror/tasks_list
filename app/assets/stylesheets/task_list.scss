@@ -2,14 +2,31 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-p {
-  padding: 0;
+.appName{
   margin: 0;
+  border-radius: 10px 10px 0px 0px;
+  background: #f1da36; /* Old browsers */
+  background: -moz-linear-gradient(top,  #f1da36 0%, #fefcea 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f1da36), color-stop(100%,#fefcea)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #f1da36 0%,#fefcea 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #f1da36 0%,#fefcea 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #f1da36 0%,#fefcea 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #f1da36 0%,#fefcea 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1da36', endColorstr='#fefcea',GradientType=0 ); /* IE6-9 */
+  padding: 10px 0;
 }
 
-table {
-  border-collapse: collapse;
+.sign {
+    width: 200px;
+    position: absolute;
+    top:0;
+    right: 0px;
+    padding: 10px;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-radius: 0px 0px 0px 20px;
 }
+
 
 #addTaskDialog, #taskShowContainer{
   width: 500px;
@@ -25,6 +42,21 @@ table {
   left: 0;
   margin: auto;
   background: white;
+}
+
+#add_task{
+  margin: 20px auto;
+}
+
+textarea {
+  width: 300px;
+  min-width:300px;
+  max-width:300px;
+
+  height:80px;
+  min-height:80px;
+  max-height:80px;
+  margin: 0px auto;
 }
 
 .closeTaskDialog, .closeTaskShow {
@@ -43,28 +75,23 @@ table {
 }
 
 .tasksContainer {
-  width: 600px;
-  margin: 0 auto;
-
+  width: 800px;
+  margin: 20px auto;
+  border: 2px solid black;
+  border-radius: 10px 10px 40px 40px;
+  padding: 0;
 }
 
 .tasksContainer .taskTable {
   margin: 0 auto;
 }
 
-.tasksContainer .taskTable td {
-  border-right: 1px solid black;
-}
 
 .tasksContainer .taskTable .desc {
   max-width: 200px;
   word-wrap: break-word;
 }
 
-
-.taskTable tr:nth-child(even) {background: #C9C9C9}
-.taskTable tr:nth-child(odd) {background: #F6F6F6}
-
-.taskTable tr:hover {background: #FFFFA3}
-
-.taskTable tr:nth-child(1) {background: white}
+ .table tbody tr:hover td {
+    background-color: #FFFFA3;
+}

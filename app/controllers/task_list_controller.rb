@@ -1,10 +1,10 @@
 class TaskListController < ApplicationController
 
   before_filter :authorize
-  before_action :find_task, only: [:show, :edit]
+  before_action :find_task_and_users, only: [:show, :edit]
 
   def index
-    @select_users = User.all.map{|elm| elm = [elm.name, elm.id] }
+    @users = User.all
     @tasks = Task.where("tasks.user_id = ? OR tasks.performer = ? ", @current_user.id, @current_user.id)
 
   end
@@ -14,9 +14,8 @@ class TaskListController < ApplicationController
   end
 
   def create
-    data = params.require(:task).permit(:description, :performer_id)
-
-    @task = Task.create(description: data["description"], owner: @current_user.name, state: "open", performer: data['performer_id'].to_i, user_id: @current_user.id)
+    data = params.require(:task).permit(:description, :performer)
+    @task = Task.create(description: data["description"], owner: @current_user.name, state: "open", performer: data['performer'].to_i, user_id: @current_user.id)
 
     respond_to do |format|
      format.html
@@ -56,8 +55,8 @@ class TaskListController < ApplicationController
 
 private
 
-  def find_task
-    @select_users = User.all.map{|elm| elm = [elm.name, elm.id] }
+  def find_task_and_users
+    @users = User.all
     @task = Task.find(params[:id])
   end
 end

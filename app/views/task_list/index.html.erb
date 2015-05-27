@@ -1,11 +1,9 @@
-<div class="tasksContainer">
-  <h1>TaskList</h1>
-    <table class="taskTable">
-      <% if !@tasks.empty? %>
+<div class="tasksContainer container">
+  <h1 class="appName"><span class="glyphicon glyphicon-th-list" style="margin-left: 10px;"></span> TaskList</h1>
+    <table class="taskTable table table-striped table-hover">
       <%= render partial: 'tasks', locals: {tasks: @tasks} %>
-      <% end %>
     </table>
-  <button id="add_task" type="button">Add Task</button>
+  <button id="add_task" class="btn btn-default btn-lg center-block" type="button">Add Task</button>
 </div>
 
 
@@ -14,19 +12,16 @@
 </div>
 
 <div id="addTaskDialog">
-    <h1>Add New Task</h1>
+    <h3>Add New Task</h3>
      <div class="closeTaskDialog">x</div>
      <%= form_for :task, url: '/', :html => {:class => 'inputForm'}, remote: true do |f| %>
        <p>Description</p>
-       <%= f.text_area :description %>
+       <%= f.text_area :description, class: 'form-control' %>
        <p>Performer</p>
-       <%= f.select(:performer_id) do %>
-         <% @select_users.each do |c| -%>
-         <%= content_tag(:option, c.first, value: c.last) %>
-       <% end %>
-       <% end %>
-       <%= f.submit "Submit" %>
+       <%= f.select "performer",
+           options_from_collection_for_select(@users, "id","name"), {},
+           { :class => 'selectpicker' } %>
 
+       <%= f.submit "Submit", class: 'btn btn-default' %>
      <% end %>
-
 </div>
