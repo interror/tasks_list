@@ -1,20 +1,17 @@
-
-
-
 <div class="tasksContainer">
   <h1>TaskList</h1>
     <table class="taskTable">
-
+      <% if !@tasks.empty? %>
       <%= render partial: 'tasks', locals: {tasks: @tasks} %>
-    
+      <% end %>
     </table>
   <button id="add_task" type="button">Add Task</button>
 </div>
 
 
+<div class="tasksContainerForm" style="display: none">
 
-
-
+</div>
 
 <div id="addTaskDialog">
     <h1>Add New Task</h1>

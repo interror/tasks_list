@@ -1,17 +1,20 @@
-<tr style="border: 2px solid #000">
+<tr style="border: 2px solid #000" class="task">
   <td>
     <%= task.owner %>
   </td>
   <td class="desc">
     <%= task.description %>
   </td>
-  <td>
+  <td class="state">
     <%= task.state %>
   </td>
   <td>
     <%= task.created_at.strftime("%d %b. '%H:%M'") %>
   </td>
-  <!-- <td>
-    <%= task.find_performer %>
-  </td> -->
+  <td>
+    <%= link_to "X", destroy_task_list_path(task),remote: true, method: 'delete',class: "delete_task", data: {confirm: 'Are you sure?'} %>
+  </td>
+  <td>
+    <%= link_to "Edit", edit_task_list_path(task), remote: true, class: 'editBtn' %>
+  </td>
 </tr>

@@ -1,8 +1,11 @@
 var chooseSort = "DESC";
+var $editBtn;
 
 $(document).ready(function() {
 
   sortList();
+  showTaskMeth();
+  editBtn_event();
 
   $('#add_task').click(function(){
     $('#addTaskDialog').show();
@@ -26,8 +29,31 @@ $(document).ready(function() {
     $('#addTaskDialog').hide();
   });
 
+  var delete_task = function(event, data, status, xhr) {
+    $(this).closest('.task').remove();
+  };
+
+
+
+  $(".taskTable").on('ajax:success', '.delete_task', delete_task)
 
 });
+
+function editBtn_event(){
+  $(".editBtn").click(function(){
+    $editBtn = $(this)
+  });
+};
+
+function showTaskMeth(){
+$(".showTask").click(function(){
+  $("#taskShowContainer").show();
+});
+
+$('.closeTaskShow').click(function(){
+  $('#taskShowContainer').hide();
+});
+};
 
 function sortList(){
 $(".order").click(function() {

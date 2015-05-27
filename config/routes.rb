@@ -7,11 +7,17 @@ Rails.application.routes.draw do
   post '/login' => 'sessions#create'
   get '/logout' => 'sessions#destroy'
 
-  #resources :tasks
+  #resources :task_lists
 
   post '/' => 'task_list#create'
   post '/sort' => 'task_list#sort'
 
+  delete '/:id' => 'task_list#destroy', :as => :destroy_task_list
+  put '/:id' => 'task_list#update'
+  patch '/:id' => 'task_list#update'
+  get '/:id/edit' => 'task_list#edit', :as => :edit_task_list
+
+  get '/:id' => "task_list#show", :as => :task
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

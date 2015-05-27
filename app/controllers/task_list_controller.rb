@@ -1,11 +1,16 @@
 class TaskListController < ApplicationController
 
   before_filter :authorize
+  before_action :find_task, only: [:show, :edit]
 
   def index
     @select_users = User.all.map{|elm| elm = [elm.name, elm.id] }
-    @tasks = @current_user.tasks
-    @tasks << Task.where(performer: @current_user.id)
+    @tasks = Task.where("tasks.user_id = ? OR tasks.performer = ? ", @current_user.id, @current_user.id)
+
+  end
+
+  def show
+    @task = Task.find(params[:id])
   end
 
   def create
@@ -20,17 +25,40 @@ class TaskListController < ApplicationController
   end
 
   def sort
-    @tasks = @current_user.tasks
-    p @tasks
-    @tasks << Task.where(performer: @current_user.id)
+    @tasks = Task.where("tasks.user_id = ? OR tasks.performer = ? ", @current_user.id, @current_user.id)
     @tasks = @tasks.order("#{params[:sort_data].first} #{params[:sort_data].last}")
 
-    p @tasks
-    #render nothing: true
     respond_to do |format|
      format.js
     end
   end
 
+  def destroy
+    @task = Task.find(params[:id])
+    @task.destroy
+    render nothing: true
+  end
 
+  def edit
+    @task = Task.find(params[:id])
+    respond_to do |format|
+     format.js
+    end
+  end
+
+  def update
+    @task = Task.find(params[:id])
+    @task.update_attributes(params.require(:task).permit(:description, :performer, :state))
+    respond_to do |format|
+     format.js
+    end
+  end
+
+private
+
+  def find_task
+    @select_users = User.all.map{|elm| elm = [elm.name, elm.id] }
+    @task = Task.find(params[:id])
+  end
 end
+#SELECT *FROM USERS WHERE email = :email

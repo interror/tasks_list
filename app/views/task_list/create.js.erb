@@ -1,2 +1,14 @@
 $("#addTaskDialog").hide();
+a = $(".taskTable tbody tr").is(".headTable");
+if ( a == false){
+  var table = '<tr class="headTable">'+
+  '<th class="order owner">Owner</th>'+
+  '<th class="order description" >Task Description</th>'+
+  '<th class="order state" >State</th>'+
+  '<th class="order created_at" >Create at</th>'+
+  '</tr>';
+  $(".taskTable").append(table);
+}
 $('.taskTable').append('<%= j render 'task', task: @task %>')
+sortList();
+showTaskMeth();

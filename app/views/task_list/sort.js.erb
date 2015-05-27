@@ -1,19 +1,4 @@
 $(".taskTable").empty().append('<tbody> <%= j render partial: 'tasks', locals: {tasks: @tasks} %> </tbody>')
 
 sortList();
-  // $(".order").click(function() {
-  //   var classList = $(this).attr('class').split(/\s+/);
-  //   console.log(classList[1], chooseSort)
-  //   $.ajax({
-  //     type: "POST",
-  //     url: "/sort",
-  //     data: { sort_data: [classList[1], chooseSort]},
-  //     success: function (data) {
-  //       if (chooseSort == "DESC"){
-  //         chooseSort = "ASC";
-  //       } else if (chooseSort == "ASC"){
-  //         chooseSort = "DESC";
-  //       }
-  //     }
-  //   });
-  // });
+showTaskMeth();
