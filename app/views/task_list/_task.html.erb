@@ -12,6 +12,9 @@
     <%= task.created_at.strftime("%d %b. '%H:%M'") %>
   </td>
   <td>
+    <%= task.find_performer %>
+  </td>
+  <td>
     <%= link_to edit_task_list_path(task), remote: true, class: 'editBtn' do %>
       <span class="glyphicon glyphicon-pencil"></span>
     <% end %>
