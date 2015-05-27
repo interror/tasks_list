@@ -1,4 +1,15 @@
 $('#taskShowContainer').hide();
 $select_field = $editBtn.closest('.task')
-$select_field.children('td.desc').html("<%= @task.description %>")
-$select_field.children('td.state').html("<%= @task.state %>")
+<% if @current_user.id == @task.performer || @current_user.id == @task.user_id %>
+  $select_field.children('td.desc').html("<%= @task.description %>")
+   var $change_span = $select_field.children('td.state').children('.label')
+   $change_span.html("<%= @task.state %>")
+  <% if @task.state == "done" %>
+    $change_span.toggleClass('label-primary label-success');
+  <% elsif @task.state == "open" %>
+    $change_span.toggleClass('label-success label-primary');
+  <% end %>
+  $select_field.children('td.performer').html("<%= @task.find_performer %>")
+<% else %>
+  $select_field.remove();
+<% end %>

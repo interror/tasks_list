@@ -6,12 +6,20 @@
     <%= task.description %>
   </td>
   <td class="state">
-    <%= task.state %>
+    <% if task.state == "done" %>
+      <span class="label label-success">
+        <%= task.state %>
+      </span>
+    <% elsif task.state == "open" %>
+      <span class="label label-primary">
+        <%= task.state %>
+      </span>
+    <% end %>
   </td>
   <td>
     <%= task.created_at.strftime("%d %b. '%H:%M'") %>
   </td>
-  <td>
+  <td class="performer">
     <%= task.find_performer %>
   </td>
   <td>
