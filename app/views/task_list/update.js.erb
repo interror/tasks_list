@@ -5,11 +5,17 @@ $select_field = $editBtn.closest('.task')
    var $change_span = $select_field.children('td.state').children('.label')
    $change_span.html("<%= @task.state %>")
   <% if @task.state == "done" %>
-    $change_span.toggleClass('label-primary label-success');
+    $change_span.removeClass('label-primary');
+    $change_span.addClass('label-success');
   <% elsif @task.state == "open" %>
-    $change_span.toggleClass('label-success label-primary');
+    $change_span.removeClass('label-success');
+    $change_span.addClass('label-primary');
   <% end %>
   $select_field.children('td.performer').html("<%= @task.find_performer %>")
 <% else %>
   $select_field.remove();
 <% end %>
+
+editBtn_event();
+sortList();
+showTaskMeth();
