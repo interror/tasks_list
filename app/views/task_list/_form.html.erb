@@ -6,7 +6,7 @@
   <%= f.text_area :description, class: 'form-control' %>
   <p style="margin:5px auto;">Performer
   <%= f.select "performer",
-      options_from_collection_for_select(@users, "id","name",:selected => "#{@task.performer}"),{},
+      options_from_collection_for_select(@users, "id","name",:selected => "#{@task.performer.id}"),{},
       { :class => 'selectpicker'}%>
       State
   <%= f.select "state",

@@ -15,7 +15,12 @@ class TaskListController < ApplicationController
 
   def create
     data = params.require(:task).permit(:description, :performer)
-    @task = Task.create(description: data["description"], owner: @current_user.name, state: "open", performer: data['performer'].to_i, user_id: @current_user.id)
+    p @current_user.id.class
+    @task = Task.create description: data["description"],
+                        owner: @current_user.name,
+                        state: "open",
+                        performer: User.find(data['performer'].to_i),
+                        user_id: @current_user.id
 
     respond_to do |format|
      format.html
@@ -47,7 +52,9 @@ class TaskListController < ApplicationController
 
   def update
     @task = Task.find(params[:id])
-    @task.update_attributes(params.require(:task).permit(:description, :performer, :state))
+    update_value = params.require(:task).permit(:description, :performer, :state)
+    update_value[:performer] = User.find(update_value[:performer].to_i)
+    @task.update_attributes(update_value)
     respond_to do |format|
      format.js
     end

@@ -11,7 +11,7 @@ $select_field = $editBtn.closest('.task')
     $change_span.removeClass('label-success');
     $change_span.addClass('label-primary');
   <% end %>
-  $select_field.children('td.performer').html("<%= @task.find_performer %>")
+  $select_field.children('td.performer').html("<%= @task.performer.name %>")
 <% else %>
   $select_field.remove();
 <% end %>

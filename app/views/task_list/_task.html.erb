@@ -20,7 +20,7 @@
     <%= task.created_at.strftime("%d %b. '%H:%M'") %>
   </td>
   <td class="performer">
-    <%= task.find_performer %>
+    <%= task.performer.name %>
   </td>
   <td>
     <%= link_to edit_task_list_path(task), remote: true, class: 'editBtn' do %>
