@@ -1,0 +1,7 @@
+$("#addTaskDialog").hide();
+a = $(".taskTable tbody tr").is(".headTable");
+$('.taskTable').append('<%= j render 'task', task: @task %>')
+
+sortList();
+showTaskMeth();
+editBtn_event();

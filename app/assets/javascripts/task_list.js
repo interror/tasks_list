@@ -7,6 +7,7 @@ $(document).ready(function() {
   showTaskMeth();
   editBtn_event();
 
+
   $('#add_task').click(function(){
     $('#addTaskDialog').show();
   });

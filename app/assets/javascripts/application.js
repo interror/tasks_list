@@ -15,3 +15,22 @@
 //= require twitter/bootstrap
 //= require bootstrap-select
 //= require turbolinks
+
+source = new EventSource('/task_list/events')
+source.addEventListener('event-create', function(e){
+  $.ajax({
+    type: "POST",
+    url: "/create_live",
+    data: { add_data: e.data }
+  });
+})
+source.addEventListener('event-update', function(e){
+  $.ajax({
+    type: "POST",
+    url: "/update_live",
+    data: { upd_data: e.data }
+  });
+})
+source.addEventListener('event-delete', function(e){
+  $("#"+e.data).remove();
+})

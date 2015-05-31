@@ -1,0 +1,21 @@
+$('#taskShowContainer').hide();
+$select_field = $("#<%= @task.id %>")
+<% if @current_user.id == @task.performer.id || @current_user.id == @task.user_id %>
+  $select_field.children('td.desc').html("<%= @task.description %>")
+   var $change_span = $select_field.children('td.state').children('.label')
+   $change_span.html("<%= @task.state %>")
+  <% if @task.state == "done" %>
+    $change_span.removeClass('label-primary');
+    $change_span.addClass('label-success');
+  <% elsif @task.state == "open" %>
+    $change_span.removeClass('label-success');
+    $change_span.addClass('label-primary');
+  <% end %>
+  $select_field.children('td.performer').html("<%= @task.performer.name %>")
+<% else %>
+  $select_field.remove();
+<% end %>
+
+editBtn_event();
+sortList();
+showTaskMeth();

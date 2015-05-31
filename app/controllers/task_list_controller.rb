@@ -1,4 +1,6 @@
 class TaskListController < ApplicationController
+  include ActionController::Live
+
 
   before_filter :authorize
   before_action :find_task_and_users, only: [:show, :edit]
@@ -15,15 +17,22 @@ class TaskListController < ApplicationController
 
   def create
     data = params.require(:task).permit(:description, :performer)
-    p @current_user.id.class
     @task = Task.create description: data["description"],
                         owner: @current_user.name,
                         state: "open",
                         performer: User.find(data['performer'].to_i),
                         user_id: @current_user.id
-
+    $redis.publish('task.create', @task.to_json)
     respond_to do |format|
      format.html
+     format.js
+    end
+  end
+
+  def create_live
+    data = params["add_data"]
+    @task = Task.find(data)
+    respond_to do |format|
      format.js
     end
   end
@@ -39,6 +48,7 @@ class TaskListController < ApplicationController
 
   def destroy
     @task = Task.find(params[:id])
+    $redis.publish('task.delete', @task.to_json)
     @task.destroy
     render nothing: true
   end
@@ -55,10 +65,53 @@ class TaskListController < ApplicationController
     update_value = params.require(:task).permit(:description, :performer, :state)
     update_value[:performer] = User.find(update_value[:performer].to_i)
     @task.update_attributes(update_value)
+    $redis.publish('task.update', @task.to_json)
     respond_to do |format|
      format.js
     end
   end
+
+  def update_live
+    data = params["upd_data"]
+    @task = Task.find(data)
+    respond_to do |format|
+     format.js
+    end
+  end
+
+  def events
+    response.headers['Content-Type'] = 'text/event-stream'
+    redis = Redis.new
+    redis.psubscribe('task.*') do |on|
+      on.pmessage do |pattern, event, data|
+        task = ActiveSupport::JSON.decode(data)
+        if event == "task.create"
+          if @current_user.id == task["performer"]["id"] && task["performer"]["id"] != task["user_id"]
+            sse = SSE.new(response.stream, retry: 300, event: "event-create")
+            sse.write(task["id"])
+            sse.close
+          end
+        elsif event == "task.update"
+          if @current_user.id == task["performer"]["id"] || @current_user.id == task["user_id"]
+            sse = SSE.new(response.stream, retry: 300, event: "event-update")
+            sse.write(task["id"])
+            sse.close
+          end
+        elsif event == "task.delete"
+          if @current_user.id == task["performer"]["id"] || @current_user.id == task["user_id"]
+            sse = SSE.new(response.stream, retry: 300, event: "event-delete")
+            sse.write(task["id"])
+            sse.close
+          end
+        end
+      end
+    end
+
+
+  ensure
+    redis.quit
+  end
+
 
 private
 

@@ -19,6 +19,11 @@ Rails.application.routes.draw do
 
   get '/:id' => "task_list#show", :as => :task
 
+  get '/task_list/events' => 'task_list#events'
+
+  post '/create_live' => 'task_list#create_live'
+  post '/update_live' => 'task_list#update_live'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
