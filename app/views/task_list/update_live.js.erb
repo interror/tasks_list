@@ -1,5 +1,10 @@
 $('#taskShowContainer').hide();
 $select_field = $("#<%= @task.id %>")
+if ($select_field.length == 0){
+  a = $(".taskTable tbody tr").is(".headTable");
+  $('.taskTable').append('<%= j render 'task', task: @task %>')
+} else {
+console.log($select_field)
 <% if @current_user.id == @task.performer.id || @current_user.id == @task.user_id %>
   $select_field.children('td.desc').html("<%= @task.description %>")
    var $change_span = $select_field.children('td.state').children('.label')
@@ -15,7 +20,7 @@ $select_field = $("#<%= @task.id %>")
 <% else %>
   $select_field.remove();
 <% end %>
-
+}
 editBtn_event();
 sortList();
 showTaskMeth();

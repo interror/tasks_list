@@ -62,10 +62,12 @@ class TaskListController < ApplicationController
 
   def update
     @task = Task.find(params[:id])
+    old_performer_id = @task.performer.id
     update_value = params.require(:task).permit(:description, :performer, :state)
     update_value[:performer] = User.find(update_value[:performer].to_i)
     @task.update_attributes(update_value)
-    $redis.publish('task.update', @task.to_json)
+    new_performer_id = @task.performer.id
+    $redis.publish('task.update', [@task, old_performer_id, new_performer_id].to_json)
     respond_to do |format|
      format.js
     end
@@ -84,20 +86,28 @@ class TaskListController < ApplicationController
     redis = Redis.new
     redis.psubscribe('task.*') do |on|
       on.pmessage do |pattern, event, data|
-        task = ActiveSupport::JSON.decode(data)
         if event == "task.create"
+          task = ActiveSupport::JSON.decode(data)
           if @current_user.id == task["performer"]["id"] && task["performer"]["id"] != task["user_id"]
             sse = SSE.new(response.stream, retry: 300, event: "event-create")
             sse.write(task["id"])
             sse.close
           end
         elsif event == "task.update"
-          if @current_user.id == task["performer"]["id"] || @current_user.id == task["user_id"]
+          array = ActiveSupport::JSON.decode(data)
+          task = array.first
+          old_u = array[1]
+          new_u = array[2]
+
+          p "User old = #{old_u}"
+          p "User new = #{new_u}"
+          if @current_user.id == task["performer"]["id"] || @current_user.id == task["user_id"] || @current_user.id == old_u
             sse = SSE.new(response.stream, retry: 300, event: "event-update")
             sse.write(task["id"])
             sse.close
           end
         elsif event == "task.delete"
+          task = ActiveSupport::JSON.decode(data)
           if @current_user.id == task["performer"]["id"] || @current_user.id == task["user_id"]
             sse = SSE.new(response.stream, retry: 300, event: "event-delete")
             sse.write(task["id"])
